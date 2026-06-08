@@ -4,16 +4,26 @@
 you can add to your own Claude instance — and adapt to your own needs.**
 
 This is a [Claude Code plugin marketplace](https://code.claude.com/docs/en/plugin-marketplaces).
-Add it once, then install any plugin in the catalog.
+Add it once, then install any plugin in the catalog. Run each line **separately** (one at a time,
+Enter between them) in the **Claude Code CLI**:
 
 ```
 /plugin marketplace add tberghane/calibratr-plugins
+```
+```
 /plugin install <plugin>@calibratr-marketplace
+```
+```
 /reload-plugins
 ```
 
-> `/plugin` runs in the **Claude Code CLI** (the `claude` terminal). It isn't available in
-> claude.ai web or the desktop chat box — see [other ways to use these](#using-these-outside-claude-code).
+> **Run them one at a time.** Pasting all three together makes the CLI read them as one repo name
+> and fail (`URL rejected: Malformed input`). Easiest path with zero syntax: run `/plugin`, add the
+> marketplace, then install from the **Discover** tab.
+>
+> `/plugin` is **CLI-only** — not available in claude.ai web or the desktop chat box. See
+> [other ways to use these](#using-these-outside-claude-code) and the per-plugin
+> [INSTALL guide](plugins/calibratr-sourcing-intelligence/INSTALL.md).
 
 ## Catalog
 
