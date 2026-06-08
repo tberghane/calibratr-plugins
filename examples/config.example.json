@@ -1,0 +1,23 @@
+{
+  "$comment": "Copy to .calibratr/config.json in your working directory. All fields optional; plugins fall back to safe defaults. Reference token NAMES here, never token values.",
+  "company": {
+    "name": "Acme",
+    "values": ["bias to ship", "writes to think", "ownership over scope"],
+    "target_signals": ["shipped production systems at scale", "active open-source footprint"],
+    "exclusion_signals": ["agency-only background", "no hands-on coding in 3+ years"]
+  },
+  "sourcing": {
+    "default_sources": ["github", "stackoverflow", "hacker_news"],
+    "default_location": "Remote (US)",
+    "use_paid_providers": false
+  },
+  "scoring": {
+    "default_weights": { "role_fit": 55, "dna_fit": 30, "impact": 15 },
+    "threshold": 60,
+    "dealbreakers": [
+      { "anti_pattern": "No production backend experience", "severity": "absolute" },
+      { "anti_pattern": "Only short (<1yr) stints across the board", "severity": "soft" }
+    ]
+  },
+  "tokens": { "github": "GITHUB_TOKEN", "product_hunt": "PRODUCTHUNT_TOKEN" }
+}

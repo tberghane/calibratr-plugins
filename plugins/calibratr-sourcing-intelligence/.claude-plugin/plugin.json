@@ -1,0 +1,29 @@
+{
+  "name": "calibratr-sourcing-intelligence",
+  "version": "0.1.0",
+  "description": "Evidence-first candidate sourcing. Finds candidates across GitHub, arXiv, Hugging Face, Stack Overflow, Hacker News, and Product Hunt with verbatim profile URLs and real proof-of-work, then verifies claims, scores against a Role DNA, and calibrates from your verdicts.",
+  "author": {
+    "name": "Calibratr",
+    "email": "taylor@calibratr.ai"
+  },
+  "license": "MIT",
+  "keywords": [
+    "recruiting",
+    "sourcing",
+    "candidates",
+    "talent",
+    "hiring",
+    "github",
+    "arxiv",
+    "proof-of-work",
+    "candidate-intelligence",
+    "scoring"
+  ],
+  "mcpServers": {
+    "csi-sources": {
+      "command": "node",
+      "args": ["${CLAUDE_PLUGIN_ROOT}/mcp/csi-sources/dist/index.js"],
+      "env": {}
+    }
+  }
+}

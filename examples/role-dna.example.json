@@ -1,0 +1,27 @@
+{
+  "title": "Staff Backend Engineer",
+  "seniority": "staff",
+  "location": "Remote (US)",
+  "must_have_requirements": [
+    { "requirement": "7+ yrs building distributed systems", "criticality": "CRITICAL" },
+    { "requirement": "Production Go or Rust", "criticality": "CRITICAL" },
+    { "requirement": "Owned a system at scale (>10k rps)", "criticality": "IMPORTANT" }
+  ],
+  "core_competencies": [
+    { "name": "Distributed systems depth", "weight": "CRITICAL" },
+    { "name": "Code quality / OSS signal", "weight": "IMPORTANT" },
+    { "name": "Written communication", "weight": "NICE_TO_HAVE" }
+  ],
+  "score_weighting": { "role_fit": 55, "dna_fit": 30, "impact": 15 },
+  "impact_expectations": {
+    "90_days": ["Ramp on the core service, ship a meaningful fix"],
+    "6_months": ["Own a subsystem end to end"],
+    "1_year": ["Lead a cross-team reliability initiative"]
+  },
+  "cultural_fit_signals": ["bias to ship", "writes to think"],
+  "dealbreakers": [
+    { "anti_pattern": "No production backend experience", "severity": "absolute" }
+  ],
+  "search_terms": ["distributed systems", "golang", "rust", "consensus", "kafka"],
+  "target_sources": ["github", "stackoverflow", "hacker_news"]
+}

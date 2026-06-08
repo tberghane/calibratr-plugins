@@ -1,0 +1,74 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Validate JSON manifests
+        run: |
+          node -e "JSON.parse(require('fs').readFileSync('.claude-plugin/marketplace.json','utf8'))" && echo "marketplace.json OK"
+          for f in $(find plugins -name plugin.json); do
+            node -e "JSON.parse(require('fs').readFileSync('$f','utf8'))" && echo "OK $f"
+          done
+
+      - name: Validate skill frontmatter
+        run: |
+          fail=0
+          for s in $(find plugins -name SKILL.md); do
+            head -6 "$s" | grep -q '^name:' && head -6 "$s" | grep -q '^description:' \
+              && echo "OK $s" || { echo "MISSING frontmatter: $s"; fail=1; }
+          done
+          exit $fail
+
+      - name: Build & verify each bundled MCP server
+        run: |
+          set -e
+          for pkg in $(find plugins -path '*/mcp/*/package.json' -not -path '*/node_modules/*'); do
+            dir=$(dirname "$pkg")
+            echo "::group::Building $dir"
+            ( cd "$dir" && npm ci && npm run build )
+            test -f "$dir/dist/index.js" || { echo "No dist/index.js in $dir"; exit 1; }
+            echo "::endgroup::"
+          done
+
+      - name: Verify committed bundle is up to date
+        run: |
+          if ! git diff --quiet -- '*/dist/index.js'; then
+            echo "::error::Committed dist/index.js is stale. Run 'npm run build' and commit the result."
+            git --no-pager diff --stat -- '*/dist/index.js'
+            exit 1
+          fi
+          echo "Bundle is in sync."
+
+      - name: Smoke-test the server starts and lists tools
+        run: |
+          for entry in $(find plugins -path '*/dist/index.js' -not -path '*/node_modules/*'); do
+            echo "Smoke-testing $entry"
+            node -e '
+              const { spawn } = require("child_process");
+              const s = spawn("node", [process.argv[1]], { stdio: ["pipe","pipe","inherit"] });
+              let b = ""; s.stdout.on("data", d => b += d);
+              const send = o => s.stdin.write(JSON.stringify(o) + "\n");
+              send({jsonrpc:"2.0",id:1,method:"initialize",params:{protocolVersion:"2024-11-05",capabilities:{},clientInfo:{name:"ci",version:"1"}}});
+              send({jsonrpc:"2.0",method:"notifications/initialized"});
+              send({jsonrpc:"2.0",id:2,method:"tools/list"});
+              setTimeout(() => {
+                const m = b.split("\n").filter(Boolean).map(l => { try { return JSON.parse(l) } catch { return null } }).find(x => x && x.id === 2);
+                const tools = m && m.result && m.result.tools;
+                if (!tools || !tools.length) { console.error("No tools listed"); process.exit(1); }
+                console.log("Tools:", tools.map(t => t.name).join(", "));
+                s.kill(); process.exit(0);
+              }, 2000);
+            ' "$entry"
+          done

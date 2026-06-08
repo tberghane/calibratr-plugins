@@ -1,0 +1,7 @@
+node_modules/
+*.log
+
+# Ship the self-contained bundle so the plugin runs with no install step.
+# (Overrides the repo-root `dist/` ignore for this path.)
+!dist/
+!dist/index.js

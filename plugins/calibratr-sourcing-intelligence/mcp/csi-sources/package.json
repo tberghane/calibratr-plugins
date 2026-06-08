@@ -1,0 +1,30 @@
+{
+  "name": "csi-sources-mcp-server",
+  "version": "0.1.0",
+  "description": "Calibratr Sourcing Intelligence — MCP server for free proof-of-work candidate sources (GitHub, Hacker News, arXiv, Hugging Face, Stack Overflow, Product Hunt, Semantic Scholar) with verbatim-URL guarantee, normalization, and deterministic scoring.",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "csi-sources-mcp-server": "dist/index.js"
+  },
+  "scripts": {
+    "start": "node dist/index.js",
+    "dev": "tsx watch src/index.ts",
+    "typecheck": "tsc --noEmit",
+    "build": "tsc --noEmit && esbuild src/index.ts --bundle --platform=node --format=esm --target=node18 --outfile=dist/index.js --banner:js=\"import { createRequire as __cr } from 'module'; const require = __cr(import.meta.url);\"",
+    "clean": "rm -rf dist"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.6.1",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "esbuild": "^0.28.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  }
+}

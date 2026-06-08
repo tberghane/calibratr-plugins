@@ -1,0 +1,18 @@
+{
+  "name": "calibratr-marketplace",
+  "owner": { "name": "Calibratr", "email": "taylor@calibratr.ai" },
+  "metadata": {
+    "description": "Calibratr's public Claude plugin marketplace — recruiting & GTM tooling you can add to your own Claude instance.",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "calibratr-sourcing-intelligence",
+      "source": "./plugins/calibratr-sourcing-intelligence",
+      "description": "Evidence-first candidate sourcing: verbatim profile URLs + real proof-of-work across GitHub, arXiv, Hugging Face, Stack Overflow, Hacker News, and Product Hunt, with claim verification, Role-DNA scoring, and verdict calibration.",
+      "version": "0.1.0",
+      "author": { "name": "Calibratr", "email": "taylor@calibratr.ai" },
+      "keywords": ["recruiting", "sourcing", "candidates", "talent", "hiring", "proof-of-work"]
+    }
+  ]
+}
