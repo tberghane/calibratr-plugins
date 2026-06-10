@@ -20,6 +20,26 @@ everywhere downstream.
 
 **Not for:** running the search itself (`evidence-sourcing`) or evaluating a candidate (`proof-of-work-scoring`).
 
+## Hard Gate Checklist (resolve BEFORE writing the Role DNA)
+
+Every role has screen-out criteria that must be decided explicitly, not left soft. For each,
+state the rule AND its hardness (HARD = drop before scoring; SOFT = flag, allow exception).
+Never silently default a screen-out to "soft." If a value is unknown, ask the user — do not assume.
+
+- **Location:** Where must the candidate be *located now*? Convert any "onsite N days/week" or
+  "in-person" JD language into a hard CURRENT-LOCATION gate by default (onsite ≠ willing to
+  relocate). State the exact metro + what counts as in-metro. Note that "relocate OK" is a
+  SOFT exception only if the user explicitly allows it.
+- **Work authorization:** Country / visa-sponsorship constraints. Default HARD unless told otherwise.
+- **Tenure / stability:** Any average-tenure band and minimum time-in-current-role. Ask if unstated.
+- **Seniority / experience band:** Floor AND ceiling in years. DEFAULT BAND = 5–12 yrs total
+  experience for ALL Calibratr roles/searches unless the role explicitly overrides it. State the
+  band on every run; the silent failure is emitting no band at all, not the band being too high.
+- **Gate Zero / client exclusions:** Companies that are hands-off (active clients, conflicts).
+
+Resolve all five gates before producing the Role DNA object. Each gate carries forward verbatim
+into `must_have_requirements`, `search_terms`, `dealbreakers`, and the handoff to `evidence-sourcing`.
+
 ## Input
 
 - **JD text** → extract directly.
@@ -34,8 +54,12 @@ Produce this object:
 {
   "title": "Staff Backend Engineer",
   "seniority": "staff",
-  "location": "Remote (US) | NYC | …",
+  "location": "NYC metro — HARD gate (candidate must currently be located here; onsite JD language = current-location gate, not relocation)",
+  "work_authorization": "US only — HARD (no sponsorship unless stated otherwise)",
+  "experience_band": { "floor_years": 5, "ceiling_years": 12, "hardness": "HARD floor + HARD ceiling" },
   "must_have_requirements": [
+    { "requirement": "CURRENTLY located in NYC metro", "criticality": "CRITICAL" },
+    { "requirement": "US work authorization", "criticality": "CRITICAL" },
     { "requirement": "7+ yrs building distributed systems", "criticality": "CRITICAL" },
     { "requirement": "Production Go or Rust", "criticality": "CRITICAL" },
     { "requirement": "Owned a system at scale (>10k rps)", "criticality": "IMPORTANT" }
@@ -74,10 +98,16 @@ config; config overrides built-in defaults. See the plugin's CONFIGURATION.md.
 ## Completeness Gate
 
 Before finalizing, check for gaps. Ask **at most 2** targeted questions only if these are missing
-and not inferable:
+and not inferable. Always verify the full Hard Gate Checklist:
 
-- **Location / remote policy** — if absent, ask.
+- **Location / remote policy** — if absent or ambiguous, ask. Resolve to a specific metro + hardness
+  (HARD by default for any onsite/hybrid JD language; "willing to relocate" is a SOFT exception only
+  if the user explicitly allows it).
+- **Work authorization** — if the JD is silent, default to US-only HARD unless the user confirms otherwise.
+- **Experience band** — state floor AND ceiling. Default 5–12 yrs total experience for all Calibratr
+  roles unless overridden. Never emit a band with only a floor.
 - **Seniority** — if the JD is ambiguous (e.g. "engineer" with staff-level scope), confirm.
+- **Tenure / stability** — capture the band if specified or hinted at; otherwise leave unset.
 
 Then echo back one line: *"Searching for: {one-sentence summary}"* and hand off to `evidence-sourcing`.
 
@@ -87,6 +117,10 @@ Then echo back one line: *"Searching for: {one-sentence summary}"* and hand off 
 - **Weights that don't sum to 100.** Re-normalize before returning.
 - **Soft-pedaling dealbreakers.** If the JD says "must have X", a missing X is a dealbreaker, not a minor gap.
 - **Skipping the location question.** Location is the single most common silent mismatch.
+- **Treating "onsite" as relocation-ok.** Onsite language in a JD = current-location gate. Someone willing to relocate is a SOFT exception only if the user explicitly says so.
+- **Omitting the experience ceiling.** A band with only a floor ("5+ years") lets over-senior candidates through. Always state floor AND ceiling; default to 5–12 yrs for all Calibratr roles.
+- **Skipping work authorization.** Default US-only HARD; ask if the JD is international or silent.
+- **Resolve the Hard Gate Checklist before producing the schema.** Location, work auth, tenure, and seniority band each get an explicit HARD/SOFT decision. Never proceed with unknowns — ask the user.
 
 ## Related Skills
 

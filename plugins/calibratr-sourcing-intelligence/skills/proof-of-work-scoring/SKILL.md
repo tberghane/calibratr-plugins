@@ -33,7 +33,15 @@ defaults (weights `{role_fit:55, dna_fit:30, impact:15}`, threshold 60). See CON
 
 ## Workflow
 
-1. **Dealbreaker gate FIRST.** Check the candidate against Role DNA `dealbreakers`. If any
+0. **Pre-scoring hard gates (apply BEFORE anything else).** Drop any candidate who fails location,
+   work-authorization, or the seniority ceiling — regardless of signal strength or score. A
+   perfect-signal candidate in the wrong location or 2× the seniority band is a DROP, not a high
+   score. Verify location on the actual candidate profile; do not trust the search tool's geo match
+   (false positives like "Manhattan, KS" for "Manhattan" are common). Default experience ceiling is
+   12 yrs total (5–12 yr band) for all Calibratr roles unless the Role DNA overrides it. If the
+   candidate was passed to you from sourcing without a confirmed location, verify it before scoring.
+
+1. **Dealbreaker gate.** Check the candidate against Role DNA `dealbreakers`. If any
    `severity: "absolute"` anti-pattern is clearly met by the evidence → call `csi_composite_score`
    with `dealbreaker_triggered: true` (forces score 0 / strong_no) and stop. Do not "average out" a
    dealbreaker.
@@ -75,6 +83,8 @@ Dealbreakers: none triggered.
 
 ## Common Mistakes
 
+- **Scoring an out-of-market or out-of-band candidate.** Location, work-auth, and seniority-ceiling failures are pre-scoring DROPs (step 0), not inputs to the scoring math. Run the hard gates before touching the dealbreaker check.
+- **Trusting the search tool's geo match.** Always verify location on the actual profile. A high score for the wrong person wastes interview time and erodes recruiter trust.
 - **Scoring before the dealbreaker gate.** An absolute dealbreaker is an auto-reject, full stop.
 - **Doing the weighted math by hand.** Always use `csi_composite_score` — hand math is non-reproducible and drifts.
 - **Optimism without evidence.** No proof for a dimension means a low-to-mid score, not the benefit of the doubt.

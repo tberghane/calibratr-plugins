@@ -62,11 +62,27 @@ CONFIGURATION.md.
 
 ## Workflow
 
+0. **Confirm hard gates before querying.** Pull location, work-authorization, tenure, and
+   seniority-band gates from the Role DNA (see `role-dna` Hard Gate Checklist). Every gate must
+   appear EXPLICITLY in both `csi_search_sources` query strings and any host Exa/Wrangle queries —
+   location is not a soft preference. If no Role DNA exists and the ask has no location gate, ask
+   before sourcing. Do not spend credits without knowing the gates.
+
 1. **Get criteria.** If you only have a JD/URL, run the `role-dna` skill first to get must-haves,
    skills, seniority, and location. If you have a plain ask, extract role + key skills + location.
 2. **Fan out.** Call `csi_search_sources` with the matched `platforms[]` and a tight query. For
    GitHub you can use qualifiers (`language:go location:"new york" followers:>200`). In parallel,
    use host **Exa**/**Wrangle** for web + LinkedIn-shaped results when breadth or LinkedIn matters.
+
+   **Exa:** Always append the location gate as literal query text (e.g. `… located in New York City /
+   NYC metro (exclude anyone outside the NYC metro area)`). Exa has no structured location filter;
+   if the location isn't in the query text, it will return out-of-market profiles.
+
+   **Wrangle:** The query string MUST spell out the location gate as a hard requirement (`"must
+   currently be located in <metro>; exclude anyone outside it or in another country; no remote, no
+   relocation"`) AND the experience/tenure band. Wrangle's NL matching is fuzzy — it returns
+   "closest" profiles and silently relaxes constraints when few match, so location and seniority
+   STILL require human verification on each returned profile (e.g. "Manhattan, KS" matching "Manhattan").
 3. **Merge.** Pool everything and call `csi_normalize_candidates` to dedupe across sources (same
    person from GitHub + arXiv collapses into one, unioning their work samples) and rank by evidence.
 4. **Enrich selectively.** For promising candidates, `csi_enrich_candidate` (github_deep,
@@ -95,6 +111,9 @@ Rank cards by proof-of-work density first, then signal strength. Lead with the m
 - **Burning paid credits silently.** Wrangle/Apollo cost money. Confirm scope first; default to free sources.
 - **Generic fit blurbs.** "Strong engineer with great experience" cites nothing. Point at a specific repo/paper/launch.
 - **Skipping dedupe.** The same person appears on GitHub + arXiv + HN. Always `csi_normalize_candidates` before presenting.
+- **Omitting location from the Exa or Wrangle query.** Without the location gate in the query text, both tools return out-of-market profiles. Always include it explicitly — do not assume the tool filters by location.
+- **Trusting the tool's geo match.** Wrangle and Exa have geo false-positives (e.g. "Manhattan, KS" for "Manhattan"). Verify location on the actual candidate profile — never assume the search tool filtered correctly.
+- **Sourcing without confirmed hard gates.** Out-of-market and over-senior candidates are the most common pipeline waste. Confirm location, work-auth, and seniority band (default 5–12 yrs) BEFORE spending credits.
 
 ## Related Skills
 
