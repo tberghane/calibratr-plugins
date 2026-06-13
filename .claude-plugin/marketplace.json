@@ -13,6 +13,14 @@
       "version": "0.1.0",
       "author": { "name": "Calibratr", "email": "taylor@calibratr.ai" },
       "keywords": ["recruiting", "sourcing", "candidates", "talent", "hiring", "proof-of-work"]
+    },
+    {
+      "name": "hermes-tweet",
+      "source": "./plugins/hermes-tweet",
+      "description": "Hermes Agent workflow guidance for X/Twitter market research, GTM social listening, public read workflows, and gated account actions through Hermes Tweet.",
+      "version": "0.1.6",
+      "author": { "name": "Xquik" },
+      "keywords": ["hermes-agent", "twitter", "x", "social-listening", "gtm", "automation"]
     }
   ]
 }

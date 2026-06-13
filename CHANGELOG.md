@@ -5,6 +5,9 @@ All notable changes to this marketplace and its plugins are documented here. Thi
 
 ## [Unreleased]
 
+### Added
+- **hermes-tweet v0.1.6**: Hermes Agent workflow guidance for X/Twitter market research, GTM social listening, public read analysis, and gated posting actions.
+
 ## [0.1.0] — 2026-06-07
 
 Initial public release of the **Calibratr Plugins** marketplace.

@@ -30,6 +30,7 @@ Enter between them) in the **Claude Code CLI**:
 | Plugin | What it does | Install |
 |---|---|---|
 | **[calibratr-sourcing-intelligence](plugins/calibratr-sourcing-intelligence)** | Evidence-first candidate sourcing — verbatim profile URLs + real proof-of-work across GitHub, arXiv, Hugging Face, Stack Overflow, Hacker News, Product Hunt; claim verification; Role-DNA scoring; verdict calibration. | `/plugin install calibratr-sourcing-intelligence@calibratr-marketplace` |
+| **[hermes-tweet](plugins/hermes-tweet)** | Hermes Agent workflows for X/Twitter market research, GTM social listening, public read analysis, and gated posting actions through Hermes Tweet. | `/plugin install hermes-tweet@calibratr-marketplace` |
 
 _More Calibratr plugins land here over time._
 
