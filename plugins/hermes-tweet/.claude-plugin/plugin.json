@@ -1,0 +1,21 @@
+{
+  "name": "hermes-tweet",
+  "version": "0.1.6",
+  "description": "Hermes Agent workflow guidance for X/Twitter market research, GTM social listening, public read workflows, and gated account actions through Hermes Tweet.",
+  "author": {
+    "name": "Xquik"
+  },
+  "license": "MIT",
+  "keywords": [
+    "hermes-agent",
+    "xquik",
+    "twitter",
+    "x",
+    "social-listening",
+    "social-media",
+    "gtm",
+    "automation"
+  ],
+  "homepage": "https://github.com/Xquik-dev/hermes-tweet#readme",
+  "repository": "https://github.com/Xquik-dev/hermes-tweet"
+}
